@@ -7,6 +7,13 @@ Frontend for TLV-300
 Make sure to install the dependencies:
 
 ```bash
+
+# clone the repository
+git clone https://github.com/bortsigan/tlv-300.git
+
+# go to your project
+cd tlv-300
+
 # npm
 npm install
 
@@ -18,6 +25,7 @@ yarn install
 
 # bun
 bun install
+
 ```
 
 ## Development Server
@@ -44,6 +52,7 @@ bun run dev
 # copy .env.example
 cp .env.example .env
 
-# assuming the Laravel backend is running in localhost port 8000
-add API_URL=http://127.0.0.1:8000 
+# copy the URL provided from the termin after you run the `php artisan serve` in the backend to the API_URL variable in the .env
+# example
+API_URL=http://127.0.0.1:8000
 ```

@@ -100,12 +100,16 @@ const domainInfo = ref(null);
 const contactInfo = ref(null);
 const runtimeConfig = useRuntimeConfig();
 
-const truncatedHostnames = computed(() => {
-    if (!domainInfo.value || !domainInfo.value.hostnames) return '';
-    const hostnamesStr = domainInfo.value.hostnames.join(', ');
-    return hostnamesStr.length > 25 ? hostnamesStr.slice(0, 22) + '...' : hostnamesStr;
-});
-
+/**
+ * Fetches domain information asynchronously using the WHOIS API and updates the relevant data properties.
+ * 
+ * - Resets the `errorMessage`, `loading`, `domainInfo`, and `contactInfo` properties before making the API request.
+ * - Checks if any information type is selected, and if not, sets an error message and stops further execution.
+ * - Makes an API call to retrieve WHOIS data based on the domain name provided in `domainName.value`.
+ * - Depending on the selected information type (`domain` or `contact`), parses the response and updates `domainInfo` or `contactInfo`.
+ * - Handles possible errors by setting appropriate error messages.
+ * - Ensures the `loading` state is reset once the process is completed, whether it succeeds or fails.
+ **/
 const fetchDomainInfo = async () => {
     errorMessage.value = '';
     loading.value = true;
@@ -137,11 +141,11 @@ const fetchDomainInfo = async () => {
                 name: whoisRecord.domainName || 'N/A',
                 registrar: whoisRecord.registrarName || 'N/A',
                 registrationDate: whoisRecord.createdDate
-                ? whoisRecord.createdDate.split('T')[0]
-                : 'N/A',
+                                ? whoisRecord.createdDate.split('T')[0]
+                                : 'N/A',
                 expirationDate: whoisRecord.expiresDate
-                ? whoisRecord.expiresDate.split('T')[0]
-                : 'N/A',
+                                ? whoisRecord.expiresDate.split('T')[0]
+                                : 'N/A',
                 estimatedAge: calculateAge(whoisRecord.createdDate),
                 hostnames:  whoisRecord.registryData.nameServers.hostNames ?? []
             };
@@ -163,6 +167,26 @@ const fetchDomainInfo = async () => {
     }
 };
 
+/**
+ * Computes a truncated string of hostnames from the `domainInfo` object.
+ * If `domainInfo` or its `hostnames` property is not available, returns an empty string.
+ * Joins the hostnames into a single string separated by commas.
+ * If the resulting string exceeds 25 characters, truncates it to 22 characters and appends '...'.
+ * Otherwise, returns the full string.
+ **/
+const truncatedHostnames = computed(() => {
+    if (!domainInfo.value || !domainInfo.value.hostnames) return '';
+    const hostnamesStr = domainInfo.value.hostnames.join(', ');
+    return hostnamesStr.length > 25 ? hostnamesStr.slice(0, 22) + '...' : hostnamesStr;
+});
+
+/**
+ * This function calculates the age in years based on the provided creation date.
+ * It takes a date string as input (`createdDate`) and returns the number of years 
+ * that have passed since that date. If `createdDate` is not provided, it returns 'N/A'.
+ * The calculation accounts for leap years by dividing the difference in milliseconds 
+ * by the number of milliseconds in an average year (365.25 days).
+**/
 const calculateAge = (createdDate) => {
     if (!createdDate) return 'N/A';
 
