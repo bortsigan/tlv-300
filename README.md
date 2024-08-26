@@ -1,6 +1,6 @@
-# Nuxt 3 Minimal Starter
+# tlv-300
+Frontend for TLV-300
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
 ## Setup
 
@@ -22,7 +22,7 @@ bun install
 
 ## Development Server
 
-Start the development server on `http://localhost:3000`:
+Start the development server on `http://localhost:5000`:
 
 ```bash
 # npm
@@ -38,38 +38,12 @@ yarn dev
 bun run dev
 ```
 
-## Production
-
-Build the application for production:
+## ENV
 
 ```bash
-# npm
-npm run build
+# copy .env.example
+cp .env.example .env
 
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+# assuming the Laravel backend is running in localhost port 8000
+add API_URL=http://127.0.0.1:8000 
 ```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
